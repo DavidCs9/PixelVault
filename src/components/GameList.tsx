@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import type { Game } from "../schemas/gameSchema";
 import GameCard from "./GameCard";
-import { loadConfigFromFile } from "vite";
+import type { Game } from "../schemas/gameSchema";
 
 function GameList() {
   const [games, setGames] = useState<Game[]>([]);
