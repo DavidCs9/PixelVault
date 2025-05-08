@@ -2,7 +2,7 @@ import type { Game } from "../schemas/gameSchema";
 
 function GameCard({ game }: { game: Game }) {
   return (
-    <div className="group overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800">
+    <div className="group relative overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800">
       <div className="relative h-48 overflow-hidden">
         <img
           src={game.background_image}
@@ -13,8 +13,8 @@ function GameCard({ game }: { game: Game }) {
           {game.rating}
         </div>
       </div>
-      <div className="p-4">
-        <h2 className="mb-1 text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
+      <div className="absolute right-0 bottom-0 left-0 bg-black/80 p-2">
+        <h2 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
           {game.name}
         </h2>
         <p className="text-sm text-gray-500 dark:text-gray-400">
