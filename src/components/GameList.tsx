@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import GameCard from "./GameCard";
 import type { Game } from "../schemas/gameSchema";
+import GameDetailModal from "./GameDetailModal";
 
 function GameList() {
   const [games, setGames] = useState<Game[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedGame, setSelectedGame] = useState<Game | null>(null);
 
   async function fetchGames() {
     try {
@@ -48,9 +50,19 @@ function GameList() {
     <div className="container h-[80vh] overflow-auto">
       <div className="grid h-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {games.map((game) => (
-          <GameCard key={game.id} game={game} />
+          <GameCard
+            key={game.id}
+            game={game}
+            onClick={() => setSelectedGame(game)}
+          />
         ))}
       </div>
+      {selectedGame && (
+        <GameDetailModal
+          game={selectedGame}
+          onClose={() => setSelectedGame(null)}
+        />
+      )}
     </div>
   );
 }
