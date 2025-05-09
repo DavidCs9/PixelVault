@@ -1,5 +1,7 @@
 import type { Game } from "../schemas/gameSchema";
 import { useEffect } from "react";
+import ThemeContext from "../context/ThemeContext";
+import { useContext } from "react";
 
 function GameDetailModal({
   game,
@@ -8,6 +10,7 @@ function GameDetailModal({
   game: Game;
   onClose: () => void;
 }) {
+  const { theme } = useContext(ThemeContext);
   // Close modal when pressing Escape key
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
@@ -34,7 +37,11 @@ function GameDetailModal({
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity" />
 
       <div
-        className="relative h-auto w-full max-w-4xl overflow-hidden rounded-xl bg-white shadow-2xl transition-all dark:bg-gray-800"
+        className={`relative h-auto w-full max-w-4xl overflow-hidden rounded-xl shadow-2xl transition-all ${
+          theme === "light"
+            ? "bg-white/80 text-black"
+            : "bg-gray-900/70 text-white"
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Hero image section */}
@@ -84,11 +91,9 @@ function GameDetailModal({
         {/* Content section */}
         <div className="grid gap-6 p-6 md:grid-cols-3">
           <div className="md:col-span-2">
-            <h2 className="mb-3 text-xl font-semibold dark:text-white">
-              About
-            </h2>
+            <h2 className="mb-3 text-xl font-semibold">About</h2>
 
-            <div className="space-y-4 text-gray-700 dark:text-gray-300">
+            <div className="space-y-4">
               <p>
                 {game.slug.split("-").join(" ")} is a game released on{" "}
                 {new Date(game.released).toLocaleDateString()}.
@@ -104,9 +109,7 @@ function GameDetailModal({
 
             {game.platforms && game.platforms.length > 0 && (
               <div className="mt-6">
-                <h3 className="mb-2 text-lg font-medium dark:text-white">
-                  Platforms
-                </h3>
+                <h3 className="mb-2 text-lg font-medium">Platforms</h3>
                 <div className="flex flex-wrap gap-2">
                   {game.platforms.map((platform, index) => (
                     <span
@@ -124,30 +127,38 @@ function GameDetailModal({
           <div className="space-y-6">
             {game.esrb_rating && (
               <div>
-                <h3 className="mb-2 text-lg font-medium dark:text-white">
-                  ESRB Rating
-                </h3>
-                <span className="inline-block rounded-md bg-gray-200 px-3 py-1 font-medium dark:bg-gray-700 dark:text-white">
+                <h3 className="mb-2 text-lg font-medium">ESRB Rating</h3>
+                <span className="inline-block rounded-md bg-gray-200 px-3 py-1 font-medium">
                   {game.esrb_rating.name}
                 </span>
               </div>
             )}
 
             <div>
-              <h3 className="mb-2 text-lg font-medium dark:text-white">
-                Game Details
-              </h3>
-              <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+              <h3 className="mb-2 text-lg font-medium">Game Details</h3>
+              <ul className="space-y-2">
                 <li className="flex items-center gap-2">
-                  <span className="text-gray-500">Added by users:</span>
+                  <span
+                    className={`${theme === "light" ? "text-gray-700" : "text-gray-400"}`}
+                  >
+                    Added by users:
+                  </span>
                   <span className="font-medium">{game.added}</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-gray-500">Suggestions:</span>
+                  <span
+                    className={`${theme === "light" ? "text-gray-700" : "text-gray-400"}`}
+                  >
+                    Suggestions:
+                  </span>
                   <span className="font-medium">{game.suggestions_count}</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-gray-500">Updated:</span>
+                  <span
+                    className={`${theme === "light" ? "text-gray-700" : "text-gray-400"}`}
+                  >
+                    Updated:
+                  </span>
                   <span className="font-medium">
                     {new Date(game.updated).toLocaleDateString()}
                   </span>

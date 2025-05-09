@@ -2,8 +2,8 @@ import type { Game } from "../schemas/gameSchema";
 
 function GameCard({ game, onClick }: { game: Game; onClick: () => void }) {
   return (
-    <div
-      className="group relative overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800"
+    <button
+      className="group relative cursor-pointer overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800"
       onClick={onClick}
     >
       <div className="relative h-48 overflow-hidden">
@@ -24,7 +24,7 @@ function GameCard({ game, onClick }: { game: Game; onClick: () => void }) {
           Released: {game.released}
         </p>
       </div>
-    </div>
+    </button>
   );
 }
 
