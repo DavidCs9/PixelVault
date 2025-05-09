@@ -1,6 +1,10 @@
 import ThemeToggleButton from "./ThemeToggleButton";
 import { Gamepad } from "lucide-react";
+import WishlistContext from "../context/WishlistContext";
+import { useContext } from "react";
+
 function Navbar() {
+  const { wishlist } = useContext(WishlistContext);
   return (
     <div className={`flex w-full items-center justify-between`}>
       <h1
@@ -8,7 +12,13 @@ function Navbar() {
       >
         <Gamepad className="h-8 w-8" /> PixelVault
       </h1>
-      <ThemeToggleButton />
+      <div className={`flex items-center justify-center gap-2`}>
+        <div className={`text-sm`}>
+          Wishlist{" "}
+          <span className={`text-sm font-bold`}>{wishlist.length}</span>
+        </div>
+        <ThemeToggleButton />
+      </div>
     </div>
   );
 }
