@@ -3,7 +3,7 @@ import { useReducer } from "react";
 import type { Game } from "../schemas/gameSchema";
 import type { WishListAction } from "../schemas/wishListActionsSchema";
 
-type WishlistState = Map<string, Game>;
+export type WishlistState = Map<string, Game>;
 
 function wishlistReducer(
   state: WishlistState,
