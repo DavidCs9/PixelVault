@@ -7,14 +7,14 @@ const PlatformSchema = z.object({
 });
 
 const RequirementsSchema = z.object({
-  minimum: z.string(),
-  recommended: z.string(),
+  minimum: z.string().optional(),
+  recommended: z.string().optional(),
 });
 
 const PlatformDetailSchema = z.object({
   platform: PlatformSchema,
-  released_at: z.string(),
-  requirements: RequirementsSchema,
+  released_at: z.string().nullable().optional(),
+  requirements: RequirementsSchema.nullable().optional(),
 });
 
 const ESRBRatingSchema = z.object({
@@ -32,17 +32,17 @@ export const GameSchema = z.object({
   background_image: z.string().url(),
   rating: z.number(),
   rating_top: z.number(),
-  ratings: z.record(z.any()), // Generic object, could be refined based on actual structure
+  ratings: z.array(z.any()), // Generic object, could be refined based on actual structure
   ratings_count: z.number(),
-  reviews_text_count: z.string(), // Note: This is a string in your example, though it might be a number
+  reviews_text_count: z.number(),
   added: z.number(),
   added_by_status: z.record(z.any()), // Generic object, could be refined based on actual structure
-  metacritic: z.number(),
+  metacritic: z.number().nullable(),
   playtime: z.number(),
   suggestions_count: z.number(),
   updated: z.string().datetime(), // ISO date string
-  esrb_rating: ESRBRatingSchema,
-  platforms: z.array(PlatformDetailSchema),
+  esrb_rating: ESRBRatingSchema.nullable(),
+  platforms: z.array(PlatformDetailSchema).nullable(),
 });
 
 // Type inference

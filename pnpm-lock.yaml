@@ -11,6 +11,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.1.5
         version: 4.1.5(vite@6.3.5(jiti@2.4.2)(lightningcss@1.29.2))
+      '@tanstack/react-query':
+        specifier: ^5.75.7
+        version: 5.75.7(react@19.1.0)
       lucide-react:
         specifier: ^0.508.0
         version: 0.508.0(react@19.1.0)
@@ -567,6 +570,14 @@ packages:
     resolution: {integrity: sha512-FE1stRoqdHSb7RxesMfCXE8icwI1W6zGE/512ae3ZDrpkQYTTYeSyUJPRCjZd8CwVAhpDUbi1YR8pcZioFJQ/w==}
     peerDependencies:
       vite: ^5.2.0 || ^6
+
+  '@tanstack/query-core@5.75.7':
+    resolution: {integrity: sha512-4BHu0qnxUHOSnTn3ow9fIoBKTelh0GY08yn1IO9cxjBTsGvnxz1ut42CHZqUE3Vl/8FAjcHsj8RNJMoXvjgHEA==}
+
+  '@tanstack/react-query@5.75.7':
+    resolution: {integrity: sha512-JYcH1g5pNjKXNQcvvnCU/PueaYg05uKBDHlWIyApspv7r5C0BM12n6ysa2QF2T+1tlPnNXOob8vr8o96Nx0GxQ==}
+    peerDependencies:
+      react: ^18 || ^19
 
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
@@ -1910,6 +1921,13 @@ snapshots:
       '@tailwindcss/oxide': 4.1.5
       tailwindcss: 4.1.5
       vite: 6.3.5(jiti@2.4.2)(lightningcss@1.29.2)
+
+  '@tanstack/query-core@5.75.7': {}
+
+  '@tanstack/react-query@5.75.7(react@19.1.0)':
+    dependencies:
+      '@tanstack/query-core': 5.75.7
+      react: 19.1.0
 
   '@types/estree@1.0.7': {}
 
