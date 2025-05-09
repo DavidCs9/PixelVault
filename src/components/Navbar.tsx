@@ -1,12 +1,12 @@
 import ThemeToggleButton from "./ThemeToggleButton";
 import { Gamepad } from "lucide-react";
-import WishlistContext from "../context/WishlistContext";
+import { useWishlist } from "../context/WishlistContext";
 import { useContext } from "react";
 import ThemeContext from "../context/ThemeContext";
 import { Link } from "@tanstack/react-router";
 function Navbar() {
   const { theme } = useContext(ThemeContext);
-  const { wishlist } = useContext(WishlistContext);
+  const { wishlist } = useWishlist();
   return (
     <div
       className={`flex w-full items-center justify-between p-4`}

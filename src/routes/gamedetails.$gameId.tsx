@@ -2,16 +2,42 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useContext } from "react";
 import ThemeContext from "../context/ThemeContext";
 import { useGames } from "../context/GamesContext";
+import { useWishlist } from "../context/WishlistContext";
+import type { Game } from "../schemas/gameSchema";
 
 export const Route = createFileRoute("/gamedetails/$gameId")({
   component: RouteComponent,
 });
 
+function getGameById(
+  gameId: string,
+  games?: Game[],
+  wishlist?: Map<string, Game>,
+): Game | undefined {
+  // Ensure gameId is a valid number
+  const parsedId = parseInt(gameId, 10);
+
+  if (isNaN(parsedId)) {
+    console.warn(`Invalid game ID format: ${gameId}`);
+    return undefined;
+  }
+
+  // First try to find the game in the games collection
+  const gameFromCollection = games?.find((game) => game.id === parsedId);
+  if (gameFromCollection) {
+    return gameFromCollection;
+  }
+
+  // If not found and wishlist is provided, try to retrieve from wishlist
+  return wishlist?.get(gameId);
+}
+
 function RouteComponent() {
   const { gameId } = Route.useParams();
   const { theme } = useContext(ThemeContext);
   const { games } = useGames();
-  const game = games?.find((game) => game.id === parseInt(gameId));
+  const { wishlist } = useWishlist();
+  const game = getGameById(gameId, games, wishlist);
 
   if (!game) {
     return <div>Game not found</div>;

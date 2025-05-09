@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useContext } from "react";
-import WishlistContext from "../context/WishlistContext";
+import { useWishlist } from "../context/WishlistContext";
 import GameCard from "../components/GameCard";
 
 export const Route = createFileRoute("/wishlist")({
@@ -8,7 +7,7 @@ export const Route = createFileRoute("/wishlist")({
 });
 
 function RouteComponent() {
-  const { wishlist } = useContext(WishlistContext);
+  const { wishlist } = useWishlist();
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-center text-2xl font-bold">Wishlist</h1>

@@ -1,10 +1,10 @@
-import { useContext, useState } from "react";
-import WishlistContext from "../context/WishlistContext";
+import { useState } from "react";
+import { useWishlist } from "../context/WishlistContext";
 import type { Game } from "../schemas/gameSchema";
 import { Link } from "@tanstack/react-router";
 
 function GameCard({ game }: { game: Game }) {
-  const { wishlist, dispatch } = useContext(WishlistContext);
+  const { wishlist, dispatch } = useWishlist();
   const [isInWishlist, setIsInWishlist] = useState(
     wishlist.has(game.id.toString()),
   );

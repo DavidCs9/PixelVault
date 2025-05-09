@@ -1,9 +1,13 @@
-import WishlistContext from "../context/WishlistContext";
-import { useReducer } from "react";
+import { createContext, useContext, useReducer } from "react";
 import type { Game } from "../schemas/gameSchema";
 import type { WishListAction } from "../schemas/wishListActionsSchema";
 
 export type WishlistState = Map<string, Game>;
+
+interface WishlistContextType {
+  wishlist: WishlistState;
+  dispatch: React.Dispatch<WishListAction>;
+}
 
 function wishlistReducer(
   state: WishlistState,
@@ -34,7 +38,15 @@ function wishlistReducer(
   }
 }
 
-function WishlistProvider({ children }: { children: React.ReactNode }) {
+interface WishlistProviderProps {
+  children: React.ReactNode;
+}
+
+const WishlistContext = createContext<WishlistContextType | undefined>(
+  undefined,
+);
+
+export function WishlistProvider({ children }: WishlistProviderProps) {
   const savedWishlist: WishlistState = (() => {
     const storedData = window.localStorage.getItem("wishlist");
     if (!storedData) {
@@ -53,6 +65,7 @@ function WishlistProvider({ children }: { children: React.ReactNode }) {
   })();
 
   const [wishlist, dispatch] = useReducer(wishlistReducer, savedWishlist);
+
   return (
     <WishlistContext.Provider value={{ wishlist, dispatch }}>
       {children}
@@ -60,4 +73,10 @@ function WishlistProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default WishlistProvider;
+export function useWishlist() {
+  const context = useContext(WishlistContext);
+  if (!context) {
+    throw new Error("useWishlist must be used within a WishlistProvider");
+  }
+  return context;
+}
