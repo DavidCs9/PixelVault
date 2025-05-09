@@ -1,47 +1,22 @@
-import { useState } from "react";
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import GameCard from "./GameCard";
-import { GameSchema, type Game } from "../schemas/gameSchema";
 import { SkipBack, SkipForward, Search } from "lucide-react";
-import useDebounce from "../hooks/useDebounce";
+import GameCard from "./GameCard";
 import ThemeContext from "../context/ThemeContext";
 import { useContext } from "react";
+import { useGames } from "../context/GamesContext";
 
 function GameList() {
   const { theme } = useContext(ThemeContext);
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const debouncedSearch = useDebounce(search, 500);
-  const PAGE_SIZE = 8;
-  const FROM_DATE = "1980-01-01";
-  const TO_DATE = "1999-12-31";
-  const ORDERING = "-rating";
-
-  async function fetchGames(pageNumber: number) {
-    const API_URL = `https://api.rawg.io/api/games?key=${
-      import.meta.env.VITE_RAWG_API_KEY
-    }&dates=${FROM_DATE},${TO_DATE}&ordering=${ORDERING}&page_size=${PAGE_SIZE}&page=${pageNumber}&search=${debouncedSearch}`;
-    const response = await fetch(API_URL);
-    const rawData = await response.json();
-    const cleanData = rawData.results.map((game: Game) => {
-      return {
-        ...game,
-        updated: new Date(game.updated).toISOString(),
-      };
-    });
-    const games = GameSchema.array().parse(cleanData);
-    return {
-      games,
-      totalPages: Math.ceil(rawData.count / PAGE_SIZE),
-    };
-  }
-
-  const { data, isLoading, error, isPlaceholderData } = useQuery({
-    queryKey: ["games", page, debouncedSearch],
-    queryFn: () => fetchGames(page),
-    placeholderData: keepPreviousData,
-    staleTime: 1000 * 60 * 5,
-  });
+  const {
+    games,
+    isLoading,
+    error,
+    page,
+    setPage,
+    search,
+    setSearch,
+    totalPages,
+    isPlaceholderData,
+  } = useGames();
 
   if (isLoading) {
     return (
@@ -85,27 +60,22 @@ function GameList() {
         {/* Pagination */}
         <div className="flex justify-end gap-4">
           <button
-            onClick={() => setPage((old) => Math.max(old - 1, 1))}
+            onClick={() => setPage(Math.max(page - 1, 1))}
             disabled={page === 1}
           >
             <SkipBack />
           </button>
           <span className="flex items-center">
-            Page {page} of {data?.totalPages || "?"}
+            Page {page} of {totalPages || "?"}
           </span>
           <button
             onClick={() => {
-              if (
-                !isPlaceholderData &&
-                data?.totalPages &&
-                page < data.totalPages
-              ) {
-                setPage((old) => old + 1);
+              if (!isPlaceholderData && totalPages && page < totalPages) {
+                setPage(page + 1);
               }
             }}
             disabled={
-              isPlaceholderData ||
-              (data?.totalPages ? page >= data.totalPages : false)
+              isPlaceholderData || (totalPages ? page >= totalPages : false)
             }
           >
             <SkipForward />
@@ -113,7 +83,7 @@ function GameList() {
         </div>
       </div>
       <div className="grid h-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {data?.games?.map((game) => <GameCard key={game.id} game={game} />)}
+        {games?.map((game) => <GameCard key={game.id} game={game} />)}
       </div>
     </div>
   );

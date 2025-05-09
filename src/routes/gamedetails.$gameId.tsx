@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useContext } from "react";
-import WishlistContext from "../context/WishlistContext";
 import ThemeContext from "../context/ThemeContext";
 
 export const Route = createFileRoute("/gamedetails/$gameId")({
@@ -9,9 +8,7 @@ export const Route = createFileRoute("/gamedetails/$gameId")({
 
 function RouteComponent() {
   const { gameId } = Route.useParams();
-  const { wishlist } = useContext(WishlistContext);
   const { theme } = useContext(ThemeContext);
-  const game = wishlist.get(gameId);
 
   if (!game) {
     return <div>Game not found</div>;
