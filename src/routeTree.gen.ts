@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as WishlistImport } from './routes/wishlist'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
+import { Route as GamedetailsGameIdImport } from './routes/gamedetails.$gameId'
 
 // Create/Update Routes
 
@@ -32,6 +33,12 @@ const AboutRoute = AboutImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const GamedetailsGameIdRoute = GamedetailsGameIdImport.update({
+  id: '/gamedetails/$gameId',
+  path: '/gamedetails/$gameId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,6 +67,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WishlistImport
       parentRoute: typeof rootRoute
     }
+    '/gamedetails/$gameId': {
+      id: '/gamedetails/$gameId'
+      path: '/gamedetails/$gameId'
+      fullPath: '/gamedetails/$gameId'
+      preLoaderRoute: typeof GamedetailsGameIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -69,12 +83,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/wishlist': typeof WishlistRoute
+  '/gamedetails/$gameId': typeof GamedetailsGameIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/wishlist': typeof WishlistRoute
+  '/gamedetails/$gameId': typeof GamedetailsGameIdRoute
 }
 
 export interface FileRoutesById {
@@ -82,14 +98,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/wishlist': typeof WishlistRoute
+  '/gamedetails/$gameId': typeof GamedetailsGameIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/wishlist'
+  fullPaths: '/' | '/about' | '/wishlist' | '/gamedetails/$gameId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/wishlist'
-  id: '__root__' | '/' | '/about' | '/wishlist'
+  to: '/' | '/about' | '/wishlist' | '/gamedetails/$gameId'
+  id: '__root__' | '/' | '/about' | '/wishlist' | '/gamedetails/$gameId'
   fileRoutesById: FileRoutesById
 }
 
@@ -97,12 +114,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   WishlistRoute: typeof WishlistRoute
+  GamedetailsGameIdRoute: typeof GamedetailsGameIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   WishlistRoute: WishlistRoute,
+  GamedetailsGameIdRoute: GamedetailsGameIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -117,7 +136,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
-        "/wishlist"
+        "/wishlist",
+        "/gamedetails/$gameId"
       ]
     },
     "/": {
@@ -128,6 +148,9 @@ export const routeTree = rootRoute
     },
     "/wishlist": {
       "filePath": "wishlist.tsx"
+    },
+    "/gamedetails/$gameId": {
+      "filePath": "gamedetails.$gameId.tsx"
     }
   }
 }
