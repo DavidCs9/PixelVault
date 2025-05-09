@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import GameCard from "./GameCard";
-import GameDetailModal from "./GameDetailModal";
 import { GameSchema, type Game } from "../schemas/gameSchema";
 import { SkipBack, SkipForward, Search } from "lucide-react";
 import useDebounce from "../hooks/useDebounce";
@@ -10,7 +9,6 @@ import { useContext } from "react";
 
 function GameList() {
   const { theme } = useContext(ThemeContext);
-  const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 500);
@@ -115,20 +113,8 @@ function GameList() {
         </div>
       </div>
       <div className="grid h-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {data?.games?.map((game) => (
-          <GameCard
-            key={game.id}
-            game={game}
-            onClick={() => setSelectedGame(game)}
-          />
-        ))}
+        {data?.games?.map((game) => <GameCard key={game.id} game={game} />)}
       </div>
-      {selectedGame && (
-        <GameDetailModal
-          game={selectedGame}
-          onClose={() => setSelectedGame(null)}
-        />
-      )}
     </div>
   );
 }

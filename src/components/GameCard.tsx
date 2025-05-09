@@ -1,8 +1,9 @@
 import { useContext, useState } from "react";
 import WishlistContext from "../context/WishlistContext";
 import type { Game } from "../schemas/gameSchema";
+import { Link } from "@tanstack/react-router";
 
-function GameCard({ game, onClick }: { game: Game; onClick: () => void }) {
+function GameCard({ game }: { game: Game }) {
   const { wishlist, dispatch } = useContext(WishlistContext);
   const [isInWishlist, setIsInWishlist] = useState(
     wishlist.has(game.id.toString()),
@@ -63,9 +64,10 @@ function GameCard({ game, onClick }: { game: Game; onClick: () => void }) {
   }
 
   return (
-    <button
-      className="group relative cursor-pointer overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800"
-      onClick={onClick}
+    <Link
+      to="/gamedetails/$gameId"
+      params={{ gameId: game.id.toString() }}
+      className="group relative block cursor-pointer overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800"
     >
       <WishlistButton
         variant={isInWishlist ? "inWishlist" : "notInWishlist"}
@@ -90,7 +92,7 @@ function GameCard({ game, onClick }: { game: Game; onClick: () => void }) {
           Released: {game.released}
         </p>
       </div>
-    </button>
+    </Link>
   );
 }
 
