@@ -3,6 +3,7 @@ import GameCard from "./GameCard";
 import ThemeContext from "../context/ThemeContext";
 import { useContext } from "react";
 import { useGames } from "../context/GamesContext";
+import GameListLoader from "./GameListLoader";
 
 function GameList() {
   const { theme } = useContext(ThemeContext);
@@ -19,11 +20,7 @@ function GameList() {
   } = useGames();
 
   if (isLoading) {
-    return (
-      <div className="flex h-full items-center justify-center">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>
-      </div>
-    );
+    return <GameListLoader theme={theme} />;
   }
 
   if (error) {
