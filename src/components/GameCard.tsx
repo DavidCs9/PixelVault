@@ -64,35 +64,37 @@ function GameCard({ game }: { game: Game }) {
   }
 
   return (
-    <Link
-      to="/gamedetails/$gameId"
-      params={{ gameId: game.id.toString() }}
-      className="group relative block cursor-pointer overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800"
-    >
+    <div className="relative">
       <WishlistButton
         variant={isInWishlist ? "inWishlist" : "notInWishlist"}
         text={isInWishlist ? "In Wishlist" : "Add to Wishlist"}
         onClick={isInWishlist ? handleRemoveFromWishlist : handleAddToWishlist}
       />
-      <div className="relative h-48 overflow-hidden">
-        <img
-          src={game.background_image ?? ""} // TODO: Add a default image
-          alt={game.name}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-        <div className="absolute top-3 right-3 rounded-full bg-black/70 px-2 py-1 text-xs font-medium text-white">
-          {game.rating}
+      <Link
+        to="/gamedetails/$gameId"
+        params={{ gameId: game.id.toString() }}
+        className="group block cursor-pointer overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800"
+      >
+        <div className="relative h-48 overflow-hidden">
+          <img
+            src={game.background_image ?? ""} // TODO: Add a default image
+            alt={game.name}
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+          <div className="absolute top-3 right-3 rounded-full bg-black/70 px-2 py-1 text-xs font-medium text-white">
+            {game.rating}
+          </div>
         </div>
-      </div>
-      <div className="absolute right-0 bottom-0 left-0 bg-black/80 p-2">
-        <h2 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
-          {game.name}
-        </h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          Released: {game.released}
-        </p>
-      </div>
-    </Link>
+        <div className="absolute right-0 bottom-0 left-0 bg-black/80 p-2">
+          <h2 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
+            {game.name}
+          </h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Released: {game.released}
+          </p>
+        </div>
+      </Link>
+    </div>
   );
 }
 
