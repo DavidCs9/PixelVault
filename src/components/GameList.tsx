@@ -84,9 +84,13 @@ function GameList() {
           </button>
         </div>
       </div>
-      <div className="grid h-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {games?.map((game) => <GameCard key={game.id} game={game} />)}
-      </div>
+      {games?.length === 0 ? (
+        <p className="text-center text-gray-500">No games found</p>
+      ) : (
+        <div className="grid h-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {games?.map((game) => <GameCard key={game.id} game={game} />)}
+        </div>
+      )}
     </div>
   );
 }
