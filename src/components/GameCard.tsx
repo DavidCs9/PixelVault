@@ -74,7 +74,7 @@ function GameCard({ game, onClick }: { game: Game; onClick: () => void }) {
       />
       <div className="relative h-48 overflow-hidden">
         <img
-          src={game.background_image}
+          src={game.background_image ?? ""} // TODO: Add a default image
           alt={game.name}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
