@@ -14,8 +14,7 @@ function Navbar() {
       </h1>
       <div className={`flex items-center justify-center gap-2`}>
         <div className={`text-sm`}>
-          Wishlist{" "}
-          <span className={`text-sm font-bold`}>{wishlist.length}</span>
+          Wishlist <span className={`text-sm font-bold`}>{wishlist.size}</span>
         </div>
         <ThemeToggleButton />
       </div>

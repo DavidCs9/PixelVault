@@ -3,12 +3,26 @@ import { useReducer } from "react";
 import type { Game } from "../schemas/gameSchema";
 import type { WishListAction } from "../schemas/wishListActionsSchema";
 
-function wishlistReducer(state: Game[], action: WishListAction) {
+type WishlistState = Set<Game>;
+
+function wishlistReducer(
+  state: WishlistState,
+  action: WishListAction,
+): WishlistState {
   switch (action.type) {
-    case "ADD_TO_WISHLIST":
-      return [...state, action.game];
-    case "REMOVE_FROM_WISHLIST":
-      return state.filter((game) => game.id !== action.game.id);
+    case "ADD_TO_WISHLIST": {
+      const newState = new Set(state);
+      newState.add(action.game);
+      return newState;
+    }
+    case "REMOVE_FROM_WISHLIST": {
+      const newState = new Set(state);
+      newState.delete(action.game);
+      return newState;
+    }
+    default: {
+      throw new Error("Invalid action");
+    }
   }
 }
 
@@ -189,8 +203,10 @@ function WishlistProvider({ children }: { children: React.ReactNode }) {
       ],
     },
   ];
-  const [wishlist, dispatch] = useReducer(wishlistReducer, mockWishList);
-
+  const [wishlist, dispatch] = useReducer(
+    wishlistReducer,
+    new Set(mockWishList),
+  );
   return (
     <WishlistContext.Provider value={{ wishlist, dispatch }}>
       {children}
