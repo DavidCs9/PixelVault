@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useContext } from "react";
 import ThemeContext from "../context/ThemeContext";
+import { useGames } from "../context/GamesContext";
 
 export const Route = createFileRoute("/gamedetails/$gameId")({
   component: RouteComponent,
@@ -9,6 +10,8 @@ export const Route = createFileRoute("/gamedetails/$gameId")({
 function RouteComponent() {
   const { gameId } = Route.useParams();
   const { theme } = useContext(ThemeContext);
+  const { games } = useGames();
+  const game = games?.find((game) => game.id === parseInt(gameId));
 
   if (!game) {
     return <div>Game not found</div>;
