@@ -60,6 +60,7 @@ function GameList() {
         {/* Pagination */}
         <div className="flex justify-end gap-4">
           <button
+            className="cursor-pointer"
             onClick={() => setPage(Math.max(page - 1, 1))}
             disabled={page === 1}
           >
@@ -69,6 +70,7 @@ function GameList() {
             Page {page} of {totalPages || "?"}
           </span>
           <button
+            className="cursor-pointer"
             onClick={() => {
               if (!isPlaceholderData && totalPages && page < totalPages) {
                 setPage(page + 1);
