@@ -19,10 +19,10 @@ function RouteComponent() {
 
   return (
     <div
-      className={`min-h-screen ${theme === "light" ? "bg-white" : "bg-gray-900"}`}
+      className={`${theme === "light" ? "bg-white" : "bg-gray-900"} h-full w-full`}
     >
       {/* Hero image section */}
-      <div className="relative h-96 w-full">
+      <div className="relative h-80 w-full">
         <img
           src={game.background_image || ""}
           alt={game.name}
