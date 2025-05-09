@@ -6,9 +6,13 @@ import { GameSchema, type Game } from "../schemas/gameSchema";
 
 function GameList() {
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
+  const PAGE_SIZE = 12;
+  const FROM_DATE = "1980-01-01";
+  const TO_DATE = "1999-12-31";
+  const ORDERING = "-rating";
 
   async function fetchGames() {
-    const API_URL = `https://api.rawg.io/api/games?key=${import.meta.env.VITE_RAWG_API_KEY}&dates=1980-01-01,1999-12-31&ordering=-rating&page_size=12`;
+    const API_URL = `https://api.rawg.io/api/games?key=${import.meta.env.VITE_RAWG_API_KEY}&dates=${FROM_DATE},${TO_DATE}&ordering=${ORDERING}&page_size=${PAGE_SIZE}`;
     const response = await fetch(API_URL);
     const rawData = await response.json();
     const cleanData = rawData.results.map((game: Game) => {

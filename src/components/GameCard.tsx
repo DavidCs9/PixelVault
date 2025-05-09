@@ -19,18 +19,39 @@ function GameCard({ game, onClick }: { game: Game; onClick: () => void }) {
   }
 
   function WishlistButton({
-    color,
+    variant,
     text,
     onClick,
   }: {
-    color: string;
+    variant: "inWishlist" | "notInWishlist";
     text: string;
     onClick: () => void;
   }) {
+    const colorStyles = {
+      inWishlist: {
+        backgroundColor: "rgba(72, 187, 120, 0.85)", // Soft green with transparency
+        hoverBackgroundColor: "rgba(72, 187, 120, 0.95)",
+      },
+      notInWishlist: {
+        backgroundColor: "rgba(113, 128, 150, 0.85)", // Soft slate gray with transparency
+        hoverBackgroundColor: "rgba(113, 128, 150, 0.95)",
+      },
+    };
+
     return (
       <div
-        className={`absolute top-1 left-1 z-10 cursor-pointer rounded-full px-2 py-1 text-xs font-medium text-white`}
-        style={{ backgroundColor: color }}
+        className={`absolute top-1 left-1 z-10 cursor-pointer rounded-full px-2 py-1 text-xs font-medium text-white transition-all duration-200 hover:shadow-sm`}
+        style={{
+          backgroundColor: colorStyles[variant].backgroundColor,
+        }}
+        onMouseOver={(e) => {
+          e.currentTarget.style.backgroundColor =
+            colorStyles[variant].hoverBackgroundColor;
+        }}
+        onMouseOut={(e) => {
+          e.currentTarget.style.backgroundColor =
+            colorStyles[variant].backgroundColor;
+        }}
         onClick={(e) => {
           e.stopPropagation();
           onClick();
@@ -47,8 +68,8 @@ function GameCard({ game, onClick }: { game: Game; onClick: () => void }) {
       onClick={onClick}
     >
       <WishlistButton
-        color={isInWishlist ? "green" : "red"}
-        text={isInWishlist ? "In Wishlist" : "Not in Wishlist"}
+        variant={isInWishlist ? "inWishlist" : "notInWishlist"}
+        text={isInWishlist ? "In Wishlist" : "Add to Wishlist"}
         onClick={isInWishlist ? handleRemoveFromWishlist : handleAddToWishlist}
       />
       <div className="relative h-48 overflow-hidden">
