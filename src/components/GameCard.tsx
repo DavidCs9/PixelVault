@@ -29,7 +29,8 @@ function GameCard({ game, onClick }: { game: Game; onClick: () => void }) {
   }) {
     return (
       <div
-        className={`absolute top-1 left-1 z-10 rounded-full bg-${color}-500 cursor-pointer px-2 py-1 text-xs font-medium text-white hover:bg-${color}-600`}
+        className={`absolute top-1 left-1 z-10 cursor-pointer rounded-full px-2 py-1 text-xs font-medium text-white`}
+        style={{ backgroundColor: color }}
         onClick={(e) => {
           e.stopPropagation();
           onClick();
