@@ -30,11 +30,11 @@ function GameCard({ game }: { game: Game }) {
   }) {
     const colorStyles = {
       inWishlist: {
-        backgroundColor: "rgba(72, 187, 120, 0.85)", // Soft green with transparency
+        backgroundColor: "rgba(72, 187, 120, 0.85)",
         hoverBackgroundColor: "rgba(72, 187, 120, 0.95)",
       },
       notInWishlist: {
-        backgroundColor: "rgba(113, 128, 150, 0.85)", // Soft slate gray with transparency
+        backgroundColor: "rgba(113, 128, 150, 0.85)",
         hoverBackgroundColor: "rgba(113, 128, 150, 0.95)",
       },
     };
@@ -64,7 +64,7 @@ function GameCard({ game }: { game: Game }) {
   }
 
   return (
-    <div className="relative">
+    <div className="relative h-full">
       <WishlistButton
         variant={isInWishlist ? "inWishlist" : "notInWishlist"}
         text={isInWishlist ? "In Wishlist" : "Add to Wishlist"}
@@ -73,23 +73,23 @@ function GameCard({ game }: { game: Game }) {
       <Link
         to="/gamedetails/$gameId"
         params={{ gameId: game.id.toString() }}
-        className="group block cursor-pointer overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800"
+        className="group flex h-full cursor-pointer overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800"
       >
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative h-24 w-24 flex-shrink-0 sm:h-32 sm:w-32">
           <img
-            src={game.background_image ?? ""} // TODO: Add a default image
+            src={game.background_image ?? ""}
             alt={game.name}
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
-          <div className="absolute top-3 right-3 rounded-full bg-black/70 px-2 py-1 text-xs font-medium text-white">
+          <div className="absolute top-1 right-1 rounded-full bg-black/70 px-1.5 py-0.5 text-xs font-medium text-white sm:top-2 sm:right-2 sm:px-2 sm:py-1">
             {game.rating}
           </div>
         </div>
-        <div className="absolute right-0 bottom-0 left-0 bg-black/80 p-2">
-          <h2 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
+        <div className="my-auto ml-2 flex flex-1 flex-col p-2 sm:p-3">
+          <h2 className="line-clamp-2 font-semibold tracking-tight text-gray-900 sm:text-base md:text-sm dark:text-white">
             {game.name}
           </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-gray-500 sm:text-sm md:text-xs dark:text-gray-400">
             Released: {game.released}
           </p>
         </div>
