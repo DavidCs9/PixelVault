@@ -33,41 +33,41 @@ function GameList() {
   }
 
   return (
-    <div className="container flex h-[80vh] flex-col gap-3 overflow-auto">
+    <div className="container mx-auto flex h-[80vh] flex-col gap-4 overflow-auto px-4 py-2">
       {/* Search and Pagination */}
-      <div className="flex justify-between gap-4">
+      <div className="flex flex-col justify-between gap-4 sm:flex-row">
         {/* Search */}
         <div
-          className="flex items-center gap-2 rounded-md border-2 p-2"
+          className="flex w-full items-center gap-2 rounded-md border-2 p-2 sm:w-auto"
           style={{
             backgroundColor: theme === "dark" ? "#111827" : "#fff",
             borderColor: theme === "dark" ? "#252525" : "#e0e0e0",
             color: theme === "dark" ? "#fff" : "#000",
           }}
         >
-          <Search className="h-4 w-4" />
+          <Search className="h-4 w-4 flex-shrink-0" />
           <input
             type="text"
-            className="outline-none"
+            className="w-full bg-transparent outline-none"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search for a game"
           />
         </div>
         {/* Pagination */}
-        <div className="flex justify-end gap-4">
+        <div className="flex items-center justify-center gap-4 sm:justify-end">
           <button
-            className="cursor-pointer"
+            className="cursor-pointer p-2 transition-opacity hover:opacity-80"
             onClick={() => setPage(Math.max(page - 1, 1))}
             disabled={page === 1}
           >
-            <SkipBack />
+            <SkipBack className="h-5 w-5" />
           </button>
-          <span className="flex items-center">
+          <span className="text-sm sm:text-base">
             Page {page} of {totalPages || "?"}
           </span>
           <button
-            className="cursor-pointer"
+            className="cursor-pointer p-2 transition-opacity hover:opacity-80"
             onClick={() => {
               if (!isPlaceholderData && totalPages && page < totalPages) {
                 setPage(page + 1);
@@ -77,14 +77,14 @@ function GameList() {
               isPlaceholderData || (totalPages ? page >= totalPages : false)
             }
           >
-            <SkipForward />
+            <SkipForward className="h-5 w-5" />
           </button>
         </div>
       </div>
       {games?.length === 0 ? (
-        <p className="text-center text-gray-500">No games found</p>
+        <p className="my-8 text-center text-gray-500">No games found</p>
       ) : (
-        <div className="grid h-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
           {games?.map((game) => <GameCard key={game.id} game={game} />)}
         </div>
       )}
