@@ -29,7 +29,7 @@ export const GameSchema = z.object({
   name: z.string(),
   released: z.string(), // Date in format "YYYY-MM-DD"
   tba: z.boolean(),
-  background_image: z.string().url(),
+  background_image: z.string().url().nullable(),
   rating: z.number(),
   rating_top: z.number(),
   ratings: z.array(z.any()), // Generic object, could be refined based on actual structure
