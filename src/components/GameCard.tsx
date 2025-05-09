@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useWishlist } from "../context/WishlistContext";
 import type { Game } from "../schemas/gameSchema";
 import { Link } from "@tanstack/react-router";
+import { HeartMinus, HeartPlus } from "lucide-react";
 
 function GameCard({ game }: { game: Game }) {
   const { wishlist, dispatch } = useWishlist();
@@ -21,11 +22,11 @@ function GameCard({ game }: { game: Game }) {
 
   function WishlistButton({
     variant,
-    text,
+    icon,
     onClick,
   }: {
     variant: "inWishlist" | "notInWishlist";
-    text: string;
+    icon: React.ReactNode;
     onClick: () => void;
   }) {
     const colorStyles = {
@@ -41,7 +42,7 @@ function GameCard({ game }: { game: Game }) {
 
     return (
       <div
-        className={`absolute top-1 left-1 z-10 cursor-pointer rounded-full px-2 py-1 text-xs font-medium text-white transition-all duration-200 hover:shadow-sm`}
+        className={`absolute top-2 right-2 z-10 cursor-pointer rounded-full px-2 py-1 text-xs font-medium text-white transition-all duration-200 hover:shadow-sm md:left-1 md:w-fit`}
         style={{
           backgroundColor: colorStyles[variant].backgroundColor,
         }}
@@ -58,7 +59,7 @@ function GameCard({ game }: { game: Game }) {
           onClick();
         }}
       >
-        {text}
+        {icon}
       </div>
     );
   }
@@ -67,7 +68,7 @@ function GameCard({ game }: { game: Game }) {
     <div className="relative h-full">
       <WishlistButton
         variant={isInWishlist ? "inWishlist" : "notInWishlist"}
-        text={isInWishlist ? "In Wishlist" : "Add to Wishlist"}
+        icon={isInWishlist ? <HeartMinus /> : <HeartPlus />}
         onClick={isInWishlist ? handleRemoveFromWishlist : handleAddToWishlist}
       />
       <Link
@@ -81,7 +82,7 @@ function GameCard({ game }: { game: Game }) {
             alt={game.name}
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
-          <div className="absolute top-1 right-1 rounded-full bg-black/70 px-1.5 py-0.5 text-xs font-medium text-white sm:top-2 sm:right-2 sm:px-2 sm:py-1">
+          <div className="absolute top-1 left-1 rounded-full bg-black/70 px-1.5 py-0.5 text-xs font-medium text-white sm:top-2 sm:right-2 sm:left-auto sm:px-2 sm:py-1 md:w-fit">
             {game.rating}
           </div>
         </div>
