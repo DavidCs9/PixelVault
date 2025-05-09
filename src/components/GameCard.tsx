@@ -1,14 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import WishlistContext from "../context/WishlistContext";
 import type { Game } from "../schemas/gameSchema";
 
 function GameCard({ game, onClick }: { game: Game; onClick: () => void }) {
   const { wishlist, dispatch } = useContext(WishlistContext);
-  const [isInWishlist, setIsInWishlist] = useState(wishlist.has(game));
-
-  useEffect(() => {
-    setIsInWishlist(wishlist.has(game));
-  }, [wishlist, game]);
+  const [isInWishlist, setIsInWishlist] = useState(
+    wishlist.has(game.id.toString()),
+  );
 
   function handleAddToWishlist() {
     dispatch({ type: "ADD_TO_WISHLIST", game });
@@ -30,7 +28,7 @@ function GameCard({ game, onClick }: { game: Game; onClick: () => void }) {
     onClick: () => void;
   }) {
     return (
-      <button
+      <div
         className={`absolute top-1 left-1 z-10 rounded-full bg-${color}-500 cursor-pointer px-2 py-1 text-xs font-medium text-white hover:bg-${color}-600`}
         onClick={(e) => {
           e.stopPropagation();
@@ -38,7 +36,7 @@ function GameCard({ game, onClick }: { game: Game; onClick: () => void }) {
         }}
       >
         {text}
-      </button>
+      </div>
     );
   }
 

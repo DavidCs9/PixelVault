@@ -3,12 +3,12 @@ import type { Game } from "../schemas/gameSchema";
 import type { WishListAction } from "../schemas/wishListActionsSchema";
 
 interface WishlistContextType {
-  wishlist: Set<Game>;
+  wishlist: Map<string, Game>;
   dispatch: React.Dispatch<WishListAction>;
 }
 
 const WishlistContext = createContext<WishlistContextType>({
-  wishlist: new Set<Game>(),
+  wishlist: new Map<string, Game>(),
   dispatch: () => {},
 });
 
