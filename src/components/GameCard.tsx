@@ -1,11 +1,57 @@
+import { useContext, useEffect, useState } from "react";
+import WishlistContext from "../context/WishlistContext";
 import type { Game } from "../schemas/gameSchema";
 
 function GameCard({ game, onClick }: { game: Game; onClick: () => void }) {
+  const { wishlist, dispatch } = useContext(WishlistContext);
+  const [isInWishlist, setIsInWishlist] = useState(wishlist.has(game));
+
+  useEffect(() => {
+    setIsInWishlist(wishlist.has(game));
+  }, [wishlist, game]);
+
+  function handleAddToWishlist() {
+    dispatch({ type: "ADD_TO_WISHLIST", game });
+    setIsInWishlist(true);
+  }
+
+  function handleRemoveFromWishlist() {
+    dispatch({ type: "REMOVE_FROM_WISHLIST", game });
+    setIsInWishlist(false);
+  }
+
+  function WishlistButton({
+    color,
+    text,
+    onClick,
+  }: {
+    color: string;
+    text: string;
+    onClick: () => void;
+  }) {
+    return (
+      <button
+        className={`absolute top-1 left-1 z-10 rounded-full bg-${color}-500 cursor-pointer px-2 py-1 text-xs font-medium text-white hover:bg-${color}-600`}
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick();
+        }}
+      >
+        {text}
+      </button>
+    );
+  }
+
   return (
     <button
       className="group relative cursor-pointer overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800"
       onClick={onClick}
     >
+      <WishlistButton
+        color={isInWishlist ? "green" : "red"}
+        text={isInWishlist ? "In Wishlist" : "Not in Wishlist"}
+        onClick={isInWishlist ? handleRemoveFromWishlist : handleAddToWishlist}
+      />
       <div className="relative h-48 overflow-hidden">
         <img
           src={game.background_image}
