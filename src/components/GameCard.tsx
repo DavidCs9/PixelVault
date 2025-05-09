@@ -73,9 +73,9 @@ function GameCard({ game }: { game: Game }) {
       <Link
         to="/gamedetails/$gameId"
         params={{ gameId: game.id.toString() }}
-        className="group flex h-full cursor-pointer overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800"
+        className="group flex h-full cursor-pointer overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:shadow-lg md:flex-col dark:bg-gray-800"
       >
-        <div className="relative h-24 w-24 flex-shrink-0 sm:h-32 sm:w-32">
+        <div className="relative h-24 w-24 overflow-hidden md:h-40 md:w-full">
           <img
             src={game.background_image ?? ""}
             alt={game.name}
