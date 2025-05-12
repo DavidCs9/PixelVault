@@ -1,247 +1,184 @@
-## PixelVault: Retro Game Finder & Wishlist \- Project Plan
+# PixelVault: Retro Game Finder & Wishlist
 
-**Core Idea:** A web application where users can search for classic retro video games, view details about them, and add them to a personal wishlist.
+PixelVault is a modern web application that helps retro gaming enthusiasts discover, explore, and track classic video games. Built with React and powered by the RAWG API, it provides a seamless experience for browsing retro games, viewing detailed information, and managing a personal wishlist.
 
-**Tech Stack (to be introduced incrementally):**
+## 🌟 Features
 
-- React (using Vite for setup: `npm create vite@latest pixel-vault -- --template react-ts` if you want TypeScript, or `react` for JavaScript)
-- React Hooks: `useState`, `useEffect`, `useContext`, `useReducer`, `useMemo`, `useCallback`, Custom Hooks
-- React Query: For data fetching, caching, and server state management.
-- React Router: For client-side navigation.
-- Styling: Choose one:
-  - CSS Modules (built-in with Vite if you name files `*.module.css`)
-  - Styled Components (`npm install styled-components`)
-  - Tailwind CSS (`npm install -D tailwindcss postcss autoprefixer` and follow setup)
-- (Optional) UI Library: A few components from Material-UI or Chakra UI.
+- **Game Discovery**
 
----
+  - Browse curated retro games (1980-1999)
+  - Search functionality with debounced input
+  - Detailed game information including ratings, release dates, and descriptions
+  - Responsive grid layout for game cards
 
-### Phase 1: The Basic Game Viewer (Focus: `useState`, `useEffect`)
+- **Personal Wishlist**
 
-**Goal:** Display a list of retro games and allow users to see basic details of a selected game.
+  - Add/remove games to your personal wishlist
+  - Persistent storage using localStorage
+  - Dedicated wishlist page
+  - Quick access to wishlist management
 
-**Steps & Requirements:**
+- **User Experience**
+  - Dark/Light theme support
+  - Responsive design
+  - Smooth navigation
+  - Loading states and error handling
+  - Accessible interface
 
-1. **Project Setup:**
+## 🛠️ Tech Stack
 
-   - Create a new React application using Vite.
-   - Get your API key from RAWG. Store it securely (e.g., in a `.env` file, Vite handles this automatically if you prefix with `VITE_`).
-     - Example `.env` file: `VITE_RAWG_API_KEY=your_actual_api_key_here`
-     - Access in code: `import.meta.env.VITE_RAWG_API_KEY`
+- **Frontend Framework:** React 19 with TypeScript
+- **Build Tool:** Vite 6 with SWC
+- **State Management & Data Fetching:**
+  - TanStack Query (React Query) v5 for server state
+  - React Context API for client state
+- **Routing:** TanStack Router v1 (file-based routing)
+- **Styling:** TailwindCSS v4 with Prettier plugin
+- **Development Tools:**
+  - TypeScript 5.8
+  - ESLint 9 with React Hooks and Prettier integration
+  - Prettier 3.5 with Tailwind plugin
+  - TanStack Router DevTools
+  - React Query DevTools
+- **UI Components:**
+  - Lucide React for icons
+- **Validation:** Zod for runtime type checking
+- **Package Manager:** pnpm (recommended)
+- **API Integration:** RAWG Games Database API
 
-2. **`GameCard` Component (`src/components/GameCard.jsx` or `.tsx`):**
+## 📦 Project Structure
 
-   - **Props:** Takes a `game` object as a prop.
-   - **Display:** Shows the game's name and background image (`background_image` from API).
-   - Make it look like a simple card.
+```
+pixel-vault/
+├── src/
+│   ├── assets/                   # Static assets
+│   ├── components/               # Reusable UI components
+│   │   ├── GameCard.tsx         # Individual game display card
+│   │   ├── GameList.tsx         # Grid of game cards
+│   │   ├── GameListLoader.tsx   # Loading state component
+│   │   ├── Navbar.tsx           # Navigation component
+│   │   └── ThemeToggleButton.tsx # Theme switcher
+│   ├── context/                 # React Context definitions
+│   ├── hooks/                   # Custom React hooks
+│   ├── layout/                  # Layout components
+│   ├── providers/               # Context providers
+│   ├── routes/                  # Route components (using TanStack Router)
+│   │   ├── __root.tsx          # Root layout
+│   │   ├── index.tsx           # Home page
+│   │   ├── about.tsx           # About page
+│   │   ├── wishlist.tsx        # Wishlist page
+│   │   └── gamedetails.$gameId.tsx # Game details page
+│   ├── schemas/                 # TypeScript/validation schemas
+│   ├── index.css               # Global styles (Tailwind imports)
+│   ├── main.tsx                # Application entry point
+│   └── routeTree.gen.ts        # Generated route tree
+├── public/                     # Public static files
+├── dist/                       # Production build output
+├── .env                        # Environment variables
+├── .gitignore                 # Git ignore rules
+├── .prettierrc                # Prettier configuration
+├── eslint.config.js           # ESLint configuration
+├── index.html                 # HTML entry point
+├── package.json               # Dependencies and scripts
+├── pnpm-lock.yaml            # PNPM lock file
+├── tsconfig.json             # TypeScript configuration
+├── tsconfig.app.json         # App-specific TS config
+├── tsconfig.node.json        # Node-specific TS config
+└── vite.config.ts            # Vite configuration
+```
 
-3. **`GameList` Component (`src/components/GameList.jsx`):**
+## 🚀 Getting Started
 
-   - **State (`useState`):**
-     - `games`: An array to store fetched games (initially empty).
-     - `isLoading`: A boolean for loading state (initially `true`).
-     - `error`: A string or object to store any fetching error (initially `null`).
-   - **Data Fetching (`useEffect`):**
-     - On component mount, fetch a list of retro games.
-       - API Endpoint: `https://api.rawg.io/api/games?key=${import.meta.env.VITE_RAWG_API_KEY}&dates=1980-01-01,1999-12-31&ordering=-rating&page_size=12` (fetches games released between 1980-1999, ordered by rating, 12 per page).
-     - Update `isLoading` to `false` after fetching (success or fail).
-     - Populate `games` state on success.
-     - Set `error` state on failure.
-     - **Remember the dependency array for `useEffect`\!**
-   - **Rendering:**
-     - If `isLoading`, display "Loading games... 🕹️".
-     - If `error`, display the error message.
-     - If games are loaded, map over the `games` array and render a `GameCard` for each game.
-     - Add basic styling to display cards in a grid.
+### Prerequisites
 
-4. **`App` Component (`src/App.jsx`):**
-   - Render the `GameList` component.
-   - Add a simple title like "PixelVault \- Retro Game Finder".
+- Node.js (v16 or higher)
+- npm or pnpm (recommended)
+- RAWG API key (get one at [rawg.io](https://rawg.io/apidocs))
 
-**Checkpoint 1:** You should see a list of retro game cards displayed on the page.
+### Installation
 
----
+1. Clone the repository:
 
-### Phase 2: Interactive Details & User Context (Focus: `useState` for selection, `useContext`)
+   ```bash
+   git clone https://github.com/yourusername/pixel-vault.git
+   cd pixel-vault
+   ```
 
-**Goal:** Allow users to click a game to see more details and introduce a theme context.
+2. Install dependencies:
 
-**Steps & Requirements:**
+   ```bash
+   npm install
+   # or
+   pnpm install
+   ```
 
-1. **`GameDetailModal` Component (`src/components/GameDetailModal.jsx`):**
+3. Create a `.env` file in the root directory:
 
-   - **Props:** `game` (the selected game object), `onClose` (a function to close the modal).
-   - **Display:**
-     - Show more details: name, release date (`released`), rating (`rating`), description (you might need to fetch full game details if the list API doesn't provide enough, or use `game.description_raw` if available).
-     - A "Close" button that calls `onClose`.
-   - Style it as a modal overlay.
+   ```
+   VITE_RAWG_API_KEY=your_api_key_here
+   ```
 
-2. **Integrate Modal into `App.jsx` (or `GameList.jsx`):**
+4. Start the development server:
+   ```bash
+   npm run dev
+   # or
+   pnpm dev
+   ```
 
-   - **State (`useState` in `App.jsx`):**
-     - `selectedGame`: Stores the game object that the user clicks on (initially `null`).
-   - **Event Handling in `GameCard.jsx`:**
-     - Modify `GameCard` to accept an `onGameSelect` prop (a function).
-     - When a game card is clicked, call `onGameSelect(game)`.
-   - **In `App.jsx` (or wherever `GameList` is rendered):**
-     - Pass a handler function to `GameList` that updates `selectedGame`.
-     - Conditionally render `GameDetailModal` if `selectedGame` is not `null`, passing `selectedGame` and a function to set `selectedGame` back to `null` (for `onClose`).
+The application will be available at `http://localhost:5173`
 
-3. **Theme Context (`src/contexts/ThemeContext.jsx`):**
+## 💻 Usage
 
-   - **Create Context:**
-     - Use `createContext` to create `ThemeContext`.
-     - Default value: `{ theme: 'light', toggleTheme: () => {} }`.
-   - **`ThemeProvider` Component (in the same file):**
-     - Manages `theme` state (`useState`: 'light' or 'dark').
-     - Provides `theme` and `toggleTheme` function via `ThemeContext.Provider`.
-   - **Wrap `App`:** In `src/main.jsx`, wrap your `<App />` component with `<ThemeProvider />`.
+### Browsing Games
 
-4. **`ThemeToggleButton` Component (`src/components/ThemeToggleButton.jsx`):**
+- The home page displays a grid of retro games
+- Use the search bar to find specific games
+- Click on a game card to view detailed information
 
-   - **Consume Context (`useContext`):**
-     - Use `useContext(ThemeContext)` to get `theme` and `toggleTheme`.
-   - Render a button that displays "Switch to Dark Mode" or "Switch to Light Mode" and calls `toggleTheme` on click.
-   - Place this button in `App.jsx`.
+### Managing Wishlist
 
-5. **Apply Theme:**
-   - In `App.jsx` (or other components), consume `ThemeContext`.
-   - Conditionally apply a class name (e.g., `dark-theme`) to the main app container or use styled-components theming based on the `theme` value.
-   - Add some basic CSS for `.dark-theme` (e.g., dark background, light text).
+- Click "Add to Wishlist" on any game card
+- Access your wishlist via the navigation bar
+- Remove games from your wishlist as needed
+- Your wishlist persists between sessions
 
-**Checkpoint 2:** You can click a game card to see a modal with details. You can toggle between light and dark themes.
+### Theme Switching
 
----
+- Toggle between light and dark themes using the theme button in the navigation bar
+- Theme preference is saved in localStorage
 
-### Phase 3: Robust Wishlist & Data Fetching with React Query (Focus: `useReducer`, `React Query`, `useCallback`, Custom Hooks)
+## 🔧 Development
 
-**Goal:** Implement a wishlist using `useReducer`, refactor data fetching with React Query, and create a custom hook.
+### Available Scripts
 
-**Steps & Requirements:**
+- `pnpm run dev` - Start development server
+- `pnpm run build` - Build for production
+- `pnpm run preview` - Preview production build
+- `pnpm run lint` - Run ESLint
+- `pnpm run type-check` - Run TypeScript type checking
 
-1. **Wishlist with `useReducer` (`src/contexts/WishlistContext.jsx`):**
+### Code Style
 
-   - **Define Actions & Reducer:**
-     - Actions: `ADD_TO_WISHLIST`, `REMOVE_FROM_WISHLIST`.
-     - Reducer function (`wishlistReducer`) that takes `state` (array of game objects) and `action` (type and payload).
-     - Ensure you don't add duplicate games.
-   - **`WishlistProvider` Component:**
-     - Use `useReducer` to manage `wishlist` state.
-     - Provide `wishlist` state and `dispatch` function (or wrapper functions like `addToWishlist` and `removeFromWishlist` that call `dispatch`) via `WishlistContext.Provider`.
-   - **Wrap `App`:** In `src/main.jsx`, wrap `<ThemeProvider />` (or `<App />`) with `<WishlistProvider />`.
+- Follow the TypeScript and React best practices
+- Use functional components with hooks
+- Implement proper error boundaries
+- Write meaningful component and function documentation
 
-2. **Integrate Wishlist Functionality:**
+## 🤝 Contributing
 
-   - **`GameCard.jsx` / `GameDetailModal.jsx`:**
-     - Consume `WishlistContext` using `useContext`.
-     - Display an "Add to Wishlist" button if the game is not already in the wishlist.
-     - Display a "Remove from Wishlist" button if it is.
-     - Use `useCallback` for the `addToWishlist` and `removeFromWishlist` handler functions if you plan to memoize these components later or if they are passed down multiple levels.
-   - **`WishlistPage` Component (placeholder for now, create `src/pages/WishlistPage.jsx`):**
-     - Consume `WishlistContext`.
-     - Display the list of games in the wishlist (just names for now). Each item should have a "Remove" button.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-3. **Integrate React Query (`npm install @tanstack/react-query`):**
+## 📝 License
 
-   - **Setup:**
-     - In `src/main.jsx`, create a `QueryClient` and wrap `<WishlistProvider />` with `<QueryClientProvider client={queryClient}>`.
-   - **Refactor `GameList.jsx`:**
-     - Remove `useState` for `games`, `isLoading`, `error`.
-     - Remove `useEffect` for data fetching.
-     - Define an asynchronous function `fetchRetroGames`.
-     - Use `useQuery` hook from React Query:
-       const { data: games, isLoading, isError, error } \= useQuery({
-       queryKey: \['retroGames'\], // Unique key for this query
-       queryFn: fetchRetroGames,
-       // Optional: staleTime, cacheTime
-       });  
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-     - Adapt rendering logic to use `isLoading`, `isError`, `error`, and `games` from `useQuery`.
+## 🙏 Acknowledgments
 
-4. **Custom Hook: `useDebounce` (`src/hooks/useDebounce.js` or `.ts`):**
-
-   - Create a custom hook that takes a `value` and a `delay` (e.g., 500ms).
-   - It should return the debounced value (only updates after the user stops changing the input value for `delay` milliseconds).
-   - Use `useState` and `useEffect` (with a `setTimeout` and `clearTimeout`) inside this custom hook.
-
-5. **Search Functionality in `GameList.jsx`:**
-   - Add an input field for searching games.
-   - **State (`useState`):** `searchTerm`.
-   - Use your `useDebounce` hook to get `debouncedSearchTerm` from `searchTerm`.
-   - Modify `fetchRetroGames` function (and the `queryKey` for `useQuery`) to include the `debouncedSearchTerm` if it exists.
-     - RAWG API search: `&search=${debouncedSearchTerm}`.
-     - Update `queryKey`: `['retroGames', debouncedSearchTerm]` so React Query refetches when the debounced term changes.
-
-**Checkpoint 3:** Game data is fetched via React Query. You can add/remove games from a wishlist. Searching for games works with a debounce.
-
----
-
-### Phase 4: Navigation, Styling & UI Polish (Focus: `React Router`, Styling Choice, `useMemo`)
-
-**Goal:** Transform into a multi-page app, apply consistent styling, and optionally use a UI library.
-
-**Steps & Requirements:**
-
-1. **React Router (`npm install react-router-dom`):**
-
-   - **Setup:**
-     - In `src/main.jsx`, import `BrowserRouter` and wrap `<QueryClientProvider />` with it.
-   - **Create Pages (`src/pages/`):**
-     - `HomePage.jsx`: Could display `GameList` or a welcome message.
-     - `GameDetailPage.jsx`: Will display details for a single game.
-     - `WishlistPage.jsx`: (Already created, now flesh it out) Display `GameCard` components for wishlist items.
-   - **Define Routes in `App.jsx`:**
-     - Use `<Routes>` and `<Route>` components.
-     - `/`: `HomePage`
-     - `/game/:gameId`: `GameDetailPage` (use `useParams` in this component to get `gameId`).
-     - `/wishlist`: `WishlistPage`
-   - **`Navbar` Component (`src/components/Navbar.jsx`):**
-     - Use `Link` from `react-router-dom` for navigation to Home and Wishlist.
-     - Include your `ThemeToggleButton`.
-     - Add the `Navbar` to `App.jsx` so it's visible on all pages.
-   - **Navigation Logic:**
-     - Modify `GameCard` so clicking it navigates to `/game/:gameId` (use `useNavigate` or wrap with `<Link>`).
-     - In `GameDetailPage.jsx`, fetch details for the specific game ID using `useQuery` and `useParams`.
-       - Query key could be `['gameDetail', gameId]`.
-
-2. **Styling Overhaul:**
-
-   - **Choose and implement your styling strategy** (CSS Modules, Styled Components, or Tailwind CSS).
-   - Apply consistent styling to: `Navbar`, `GameCard`, `GameDetailModal` (if still used, or integrate its content into `GameDetailPage`), `WishlistPage`, buttons, inputs.
-   - Make it look good and feel cohesive\!
-   - Ensure basic responsiveness.
-
-3. **Performance Optimization with `useMemo`:**
-   - In `WishlistPage.jsx`, if you want to display a count of wishlist items or some derived data from the wishlist that might be "expensive" to calculate on every render (e.g., "You have X games on your wishlist\!"), use `useMemo` to memoize this calculation.
-     const wishlistItemCount \= useMemo(() \=\> {
-     console.log("Calculating wishlist count..."); // To see when it runs
-     return wishlist.length;
-     }, \[wishlist\]); // Recalculates only if wishlist array changes
-4. **(Optional) UI Library Integration:**
-   - Pick a UI library (e.g., Material-UI: `npm install @mui/material @emotion/react @emotion/styled`).
-   - Replace a few components like buttons or the modal with components from the library to get a feel for it. For example, use MUI's `<Button>` or `<Modal>`.
-
-**Checkpoint 4:** The app has multiple pages with routing. It looks polished with consistent styling. `useMemo` is used for a calculated value.
-
----
-
-### Phase 5: Final Touches & Review (Self-Study)
-
-- **Error Handling:** Ensure robust error handling for API calls (React Query's `isError` and `error` help here). Display user-friendly error messages.
-- **Empty States:** What happens if the wishlist is empty? Or if a search returns no results? Implement nice empty state messages.
-- **Accessibility (a11y):**
-  - Use semantic HTML (e.g., `<nav>`, `<main>`, `<button>`).
-  - Ensure buttons and interactive elements are keyboard accessible.
-  - Add `alt` text to images.
-- **Code Cleanup:** Refactor any messy parts, add comments where necessary.
-- **Local Storage for Wishlist (Stretch Goal):**
-  - In `WishlistProvider`, use `useEffect` to save the wishlist to `localStorage` whenever it changes.
-  - When the provider initializes, try to load the wishlist from `localStorage` as the initial state for `useReducer`.
-- **Review & Prepare to Discuss:**
-  - Think about the choices you made (e.g., why `useReducer` for wishlist, why React Query).
-  - Be ready to explain how each hook works and why you used it.
-  - Consider potential improvements or alternative approaches.
-
----
-
-This project plan is ambitious for 4 days but hitting the core of each phase will give you excellent practice. Focus on understanding _why_ you're using each tool and hook. Good luck, and have fun building PixelVault\!
+- [RAWG Video Games Database API](https://rawg.io/apidocs) for game data
+- [React](https://reactjs.org/) for the frontend framework
+- [Vite](https://vitejs.dev/) for the build tool
+- All contributors and supporters of the project
